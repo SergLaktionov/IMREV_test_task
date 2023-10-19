@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CompanyController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,4 +32,11 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::get('/companies/filter', [CompanyController::class, 'getFilteredCompanies'])->name('search.companies');
+
+    Route::resources([
+        'companies' => CompanyController::class,
+        'clients' => ClientController::class,
+    ]);
 });
