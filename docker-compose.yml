@@ -1,0 +1,66 @@
+version: "3.8"
+
+networks:
+  laravel:
+
+services:
+  #PHP Service
+  app:
+    build: .
+    image: php:8.2-fpm
+    restart: unless-stopped
+    container_name: app_${APP_NAME}
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - laravel
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: webserver_${APP_NAME}
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8000:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - laravel
+
+  #MySQL Service
+  db:
+    image: "mysql:8.1"
+    restart: always
+    container_name: mysql_${APP_NAME}
+    volumes:
+      - "./docker/mysql/data:/var/lib/mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD=docker
+      - MYSQL_DATABASE=crm_laktionov
+      - MYSQL_USER=docker
+      - MYSQL_PASSWORD=docker
+    ports:
+      - "3306:3306"
+    networks:
+      - laravel
+
+  #npm Service
+  npm:
+    image: node:current-alpine
+    restart: "no"
+    container_name: npm_${APP_NAME}
+    volumes:
+      - ./:/var/www
+    working_dir: /var/www
+    entrypoint: [ 'npm' ]
+    networks:
+      - laravel
