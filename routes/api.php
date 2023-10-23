@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\ClientController;
+use App\Http\Controllers\API\CompanyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/companies/{company}', [CompanyController::class, 'index']);
+    Route::get('/clients/{client}', [ClientController::class, 'index']);
+    Route::get('/client_companies/{client}', [ClientController::class, 'showClientCompanies']);
 });

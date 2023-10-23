@@ -49,6 +49,9 @@ const logout = () => {
                                 <NavLink :href="route('clients.index')" :active="route().current('clients.index')">
                                     Clients
                                 </NavLink>
+                                <NavLink :href="route('api-tokens.index')" :active="route().current('api-tokens.index')">
+                                    API Tokens
+                                </NavLink>
                             </div>
                         </div>
 
@@ -120,6 +123,9 @@ const logout = () => {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('clients.index')" :active="route().current('clients.index')">
                             Clients
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('api-tokens.index')" :active="route().current('api-tokens.index')">
+                            API Tokens
                         </ResponsiveNavLink>
                     </div>
 
